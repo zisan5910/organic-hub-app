@@ -36,9 +36,12 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
     onClose();
   };
 
-  const handleInstall = () => {
-    installApp();
+  const handleInstall = async () => {
     onClose();
+    // Small delay to let menu close first
+    setTimeout(() => {
+      installApp();
+    }, 100);
   };
 
   const socialLinks = [

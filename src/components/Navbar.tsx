@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Menu, Download, Check } from 'lucide-react';
+import { Menu, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import MobileMenu from './MobileMenu';
 import { usePwaInstall } from '@/hooks/use-pwa-install';
@@ -17,18 +17,15 @@ const Navbar = () => {
           </Link>
 
           <div className="flex items-center gap-2">
-            <button
-              onClick={installApp}
-              disabled={isInstalled}
-              className={`nav-button flex items-center gap-2 text-sm ${
-                isInstalled ? 'opacity-50 cursor-not-allowed' : ''
-              }`}
-            >
-              {isInstalled ? <Check size={20} /> : <Download size={20} />}
-              <span className="hidden sm:inline">
-                {isInstalled ? 'Installed' : 'Install App'}
-              </span>
-            </button>
+            {!isInstalled && (
+              <button
+                onClick={installApp}
+                className="nav-button flex items-center gap-2 text-sm"
+              >
+                <Download size={20} />
+                <span className="hidden sm:inline">Install App</span>
+              </button>
+            )}
 
             <button
               onClick={() => setIsMenuOpen(true)}
