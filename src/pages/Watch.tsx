@@ -6,10 +6,12 @@ import VideoPlayer from '@/components/VideoPlayer';
 import RecommendedVideos from '@/components/RecommendedVideos';
 import { videos } from '@/data/videos';
 import { toast } from '@/hooks/use-toast';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Watch = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   // Scroll to top on page load/navigation
   useEffect(() => {
@@ -76,14 +78,90 @@ const Watch = () => {
     );
   }
 
+  // Mobile Layout - Fixed video + scrollable recommendations
+  if (isMobile) {
+    return (
+      <div className="h-screen bg-background flex flex-col overflow-hidden">
+        <Navbar />
+
+        {/* Fixed Video Section */}
+        <div className="pt-14 shrink-0">
+          <div className="p-2">
+            <VideoPlayer embedUrl={currentVideo.embedUrl} title={currentVideo.title} />
+            
+            {/* Video Details */}
+            <div className="mt-2 px-2">
+              <h1 className="text-base font-medium text-foreground line-clamp-2">
+                {currentVideo.title}
+              </h1>
+              
+              {/* Channel info + Controls in same row */}
+              <div className="flex items-center justify-between mt-1">
+                <p className="text-muted-foreground text-xs">
+                  HSCian • {currentVideo.views} views
+                </p>
+
+                {/* Mobile Controls - Minimalist */}
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={handlePrevious}
+                    disabled={currentIndex === 0}
+                    className="p-2 text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                    aria-label="Previous"
+                  >
+                    <SkipBack size={18} />
+                  </button>
+
+                  <button
+                    onClick={handleNext}
+                    disabled={currentIndex === categoryVideos.length - 1}
+                    className="p-2 text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                    aria-label="Next"
+                  >
+                    <SkipForward size={18} />
+                  </button>
+
+                  <button
+                    onClick={handleShare}
+                    className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label="Share"
+                  >
+                    <Share2 size={18} />
+                  </button>
+
+                  <button
+                    onClick={handlePdfOpen}
+                    className="flex items-center gap-1 px-3 py-1.5 bg-primary text-primary-foreground rounded-full transition-colors text-xs font-medium"
+                    aria-label="PDF"
+                  >
+                    <FileText size={14} />
+                    <span>PDF</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Scrollable Recommended Videos */}
+        <div className="flex-1 overflow-y-auto border-t border-border">
+          <RecommendedVideos
+            videos={categoryVideos}
+            currentVideoId={currentVideo.id}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // Desktop Layout
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* No Sidebar on Watch page - full width */}
       <main className="pt-14">
         <div className="flex flex-col lg:flex-row">
-          {/* Video Section - Scrollable on desktop to show controls */}
+          {/* Video Section */}
           <div className="lg:flex-1 lg:max-h-[calc(100vh-3.5rem)] lg:overflow-y-auto">
             <div className="p-4">
               <VideoPlayer embedUrl={currentVideo.embedUrl} title={currentVideo.title} />
@@ -94,53 +172,14 @@ const Watch = () => {
                   {currentVideo.title}
                 </h1>
                 
-                {/* Mobile: Channel info + Controls in same row */}
                 <div className="flex items-center justify-between mt-2">
                   <p className="text-muted-foreground text-sm">
                     HSCian • {currentVideo.views} views
                   </p>
-
-                  {/* Mobile Controls - Minimalist */}
-                  <div className="flex items-center gap-1 lg:hidden">
-                    <button
-                      onClick={handlePrevious}
-                      disabled={currentIndex === 0}
-                      className="p-2 text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                      aria-label="Previous"
-                    >
-                      <SkipBack size={18} />
-                    </button>
-
-                    <button
-                      onClick={handleNext}
-                      disabled={currentIndex === categoryVideos.length - 1}
-                      className="p-2 text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                      aria-label="Next"
-                    >
-                      <SkipForward size={18} />
-                    </button>
-
-                    <button
-                      onClick={handleShare}
-                      className="p-2 text-muted-foreground hover:text-foreground transition-colors"
-                      aria-label="Share"
-                    >
-                      <Share2 size={18} />
-                    </button>
-
-                    <button
-                      onClick={handlePdfOpen}
-                      className="flex items-center gap-1 px-2 py-1.5 text-muted-foreground hover:text-foreground transition-colors text-xs font-medium"
-                      aria-label="PDF"
-                    >
-                      <FileText size={16} />
-                      <span>PDF</span>
-                    </button>
-                  </div>
                 </div>
 
                 {/* Desktop Controls */}
-                <div className="hidden lg:flex items-center gap-3 mt-4">
+                <div className="flex items-center gap-3 mt-4">
                   <button
                     onClick={handlePrevious}
                     disabled={currentIndex === 0}
@@ -164,7 +203,10 @@ const Watch = () => {
                     <span>Share</span>
                   </button>
 
-                  <button onClick={handlePdfOpen} className="control-button">
+                  <button 
+                    onClick={handlePdfOpen} 
+                    className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
+                  >
                     <FileText size={18} />
                     <span>PDF</span>
                   </button>
