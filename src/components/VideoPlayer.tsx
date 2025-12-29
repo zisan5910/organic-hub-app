@@ -453,7 +453,7 @@ const VideoPlayer = ({ embedUrl, title }: VideoPlayerProps) => {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const playbackRates = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
+  const playbackRates = [1, 1.25, 1.5, 1.75, 2];
   const progressPercent = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   // Mobile Controls - Ultra Minimalist Single Line

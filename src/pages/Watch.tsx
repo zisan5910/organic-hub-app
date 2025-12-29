@@ -6,6 +6,7 @@ import VideoPlayer from '@/components/VideoPlayer';
 import RecommendedVideos from '@/components/RecommendedVideos';
 import { videos } from '@/data/videos';
 import { toast } from '@/hooks/use-toast';
+import { APP_CONFIG } from '@/config/app';
 
 const Watch = () => {
   const { id } = useParams<{ id: string }>();
@@ -94,9 +95,7 @@ const Watch = () => {
             
             {/* Mobile: Channel info + Controls in same row */}
             <div className="flex items-center justify-between mt-2">
-              <p className="text-muted-foreground text-sm">
-                HSCian • {currentVideo.views} views
-              </p>
+              <p className="text-muted-foreground text-sm">{APP_CONFIG.channelName} • {currentVideo.views} views</p>
 
               {/* Mobile Controls - Minimalist */}
               <div className="flex items-center gap-1 lg:hidden">

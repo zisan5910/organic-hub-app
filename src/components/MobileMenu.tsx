@@ -1,4 +1,4 @@
-import { BookOpen, FileText, Link as LinkIcon, Facebook, Youtube, MessageCircle, Send, Moon, Sun, Download, Share2 } from 'lucide-react';
+import { BookOpen, FileText, Link as LinkIcon, Facebook, Youtube, MessageCircle, Send, Moon, Sun, Download, Share2, Calendar, HelpCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Switch } from '@/components/ui/switch';
@@ -6,6 +6,7 @@ import { useTheme } from '@/hooks/use-theme';
 import { usePwaInstall } from '@/hooks/use-pwa-install';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { toast } from '@/hooks/use-toast';
+import { APP_CONFIG } from '@/config/app';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -21,13 +22,11 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'HSCianTV',
-          text: 'HSC শিক্ষার্থীদের জন্য বিনামূল্যে ভিডিও লেসন',
+          title: APP_CONFIG.name,
+          text: APP_CONFIG.description,
           url: url,
         });
-      } catch (err) {
-        // User cancelled
-      }
+      } catch (err) {}
     } else {
       await navigator.clipboard.writeText(url);
       toast({
@@ -44,11 +43,11 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
   };
 
   const socialLinks = [
-    { href: 'https://facebook.com/hsciantv', icon: Facebook, label: 'Facebook Page', color: 'text-blue-600' },
-    { href: 'https://facebook.com/groups/hsciantv', icon: Facebook, label: 'Facebook Group', color: 'text-blue-500' },
-    { href: 'https://youtube.com/@hsciantv', icon: Youtube, label: 'YouTube', color: 'text-red-500' },
-    { href: 'https://wa.me/+8801234567890', icon: MessageCircle, label: 'WhatsApp', color: 'text-green-500' },
-    { href: 'https://t.me/hsciantv', icon: Send, label: 'Telegram', color: 'text-blue-400' },
+    { href: APP_CONFIG.social.facebook, icon: Facebook, label: 'Facebook Page', color: 'text-blue-600' },
+    { href: APP_CONFIG.social.facebookGroup, icon: Facebook, label: 'Facebook Group', color: 'text-blue-500' },
+    { href: APP_CONFIG.social.youtube, icon: Youtube, label: 'YouTube', color: 'text-red-500' },
+    { href: APP_CONFIG.social.whatsapp, icon: MessageCircle, label: 'WhatsApp', color: 'text-green-500' },
+    { href: APP_CONFIG.social.telegram, icon: Send, label: 'Telegram', color: 'text-blue-400' },
   ];
 
   return (
@@ -74,39 +73,18 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
               />
             </div>
 
-            {/* Navigation Links */}
             <div className="space-y-1">
-              <Link
-                to="/"
-                onClick={onClose}
-                className="sidebar-link"
-              >
+              <Link to="/" onClick={onClose} className="sidebar-link">
                 <BookOpen size={20} />
                 <span>All Courses</span>
               </Link>
-
-              <a
-                href="#"
-                className="sidebar-link"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onClose();
-                }}
-              >
-                <FileText size={20} />
-                <span>Study Materials</span>
+              <a href={APP_CONFIG.externalLinks.admissionCalendar} target="_blank" rel="noopener noreferrer" className="sidebar-link" onClick={onClose}>
+                <Calendar size={20} className="text-orange-500" />
+                <span>Admission Calendar</span>
               </a>
-
-              <a
-                href="#"
-                className="sidebar-link"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onClose();
-                }}
-              >
-                <LinkIcon size={20} />
-                <span>PDF</span>
+              <a href={APP_CONFIG.externalLinks.questionAnalysis} target="_blank" rel="noopener noreferrer" className="sidebar-link" onClick={onClose}>
+                <HelpCircle size={20} className="text-purple-500" />
+                <span>Question Analysis</span>
               </a>
             </div>
 
