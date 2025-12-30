@@ -55,27 +55,20 @@ const VideoPlayer = ({ embedUrl, title }: VideoPlayerProps) => {
 
   const videoId = getVideoId(embedUrl);
 
-  // Load YouTube IFrame API
   useEffect(() => {
-    const loadYouTubeAPI = () => {
-      if (window.YT && window.YT.Player) {
-        setApiLoaded(true);
-        return;
-      }
+    if (window.YT && window.YT.Player) {
+      setApiLoaded(true);
+      return;
+    }
 
-      if (!document.querySelector('script[src="https://www.youtube.com/iframe_api"]')) {
-        const tag = document.createElement('script');
-        tag.src = 'https://www.youtube.com/iframe_api';
-        const firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
-      }
+    if (!document.querySelector('script[src="https://www.youtube.com/iframe_api"]')) {
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      tag.async = true;
+      document.head.appendChild(tag);
+    }
 
-      window.onYouTubeIframeAPIReady = () => {
-        setApiLoaded(true);
-      };
-    };
-
-    loadYouTubeAPI();
+    window.onYouTubeIframeAPIReady = () => setApiLoaded(true);
   }, []);
 
   // Initialize player when API is loaded
@@ -105,8 +98,8 @@ const VideoPlayer = ({ embedUrl, title }: VideoPlayerProps) => {
           playsinline: 1,
           origin: window.location.origin,
           enablejsapi: 1,
-          // Faster loading
           start: 0,
+          loading: 'eager',
         },
         events: {
           onReady: onPlayerReady,
