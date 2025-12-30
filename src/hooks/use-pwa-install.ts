@@ -56,21 +56,14 @@ export const usePwaInstall = () => {
         setIsReady(false);
       } catch (error) {}
     } else {
-      const ua = navigator.userAgent || '';
-      const isInAppBrowser = /FBAN|FBAV|FB_IAB|FBIOS|FB4A|Messenger|Instagram|WhatsApp|Line|MicroMessenger|Snapchat|Twitter|LinkedInApp/i.test(ua);
-      const isAndroid = /Android/i.test(ua);
-      if (isInAppBrowser && isAndroid) {
-        const currentUrl = window.location.href;
-        window.location.href = `intent://${currentUrl.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end`;
-        return;
+      const userAgent = navigator.userAgent.toLowerCase();
+      const isIOS = /iphone|ipad|ipod/.test(userAgent);
+      const isSafari = /safari/.test(userAgent) && !/chrome/.test(userAgent);
+      if (isIOS || isSafari) {
+        alert('অ্যাপ ইন্সটল করতে:\n\n1. Share বাটনে ক্লিক করুন\n2. "Add to Home Screen" সিলেক্ট করুন');
+      } else {
+        alert('অ্যাপ ইন্সটল করতে:\n\nব্রাউজারের URL বারের ডান পাশে Install আইকনে ক্লিক করুন অথবা মেনু থেকে "Install App" সিলেক্ট করুন');
       }
-      if (navigator.share) {
-        try {
-          await navigator.share({ title: document.title, url: window.location.href });
-          return;
-        } catch (error) {}
-      }
-      window.location.href = '/install';
     }
   }, [isInstalled]);
 
