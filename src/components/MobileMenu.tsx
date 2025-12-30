@@ -37,8 +37,8 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
     onClose();
   };
 
-  const handleInstall = async () => {
-    await installApp();
+  const handleInstall = () => {
+    installApp();
     onClose();
   };
 

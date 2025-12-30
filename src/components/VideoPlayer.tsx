@@ -481,7 +481,7 @@ const VideoPlayer = ({ embedUrl, title }: VideoPlayerProps) => {
             <div className={`bg-black/70 rounded-full p-4 ${
               showCenterIcon === 'forward' ? 'ml-24' : 
               showCenterIcon === 'backward' ? 'mr-24' : ''
-            }`} style={{ animation: 'pulse 0.5s ease-out' }}>
+            }`}>
               {showCenterIcon === 'play' && <Play className="w-10 h-10 text-white" fill="white" />}
               {showCenterIcon === 'pause' && <Pause className="w-10 h-10 text-white" fill="white" />}
               {showCenterIcon === 'forward' && (
@@ -501,13 +501,13 @@ const VideoPlayer = ({ embedUrl, title }: VideoPlayerProps) => {
         {/* Loading indicator */}
         {!isReady && (
           <div className="absolute inset-0 flex items-center justify-center z-20 bg-black">
-            <div className="w-10 h-10 border-3 border-primary border-t-transparent rounded-full animate-spin" />
+            <div className="text-white/80 text-sm font-medium">Loading…</div>
           </div>
         )}
 
         {/* Mobile Controls - Minimalist Single Line */}
         <div
-          className={`absolute bottom-0 left-0 right-0 z-30 transition-opacity duration-200 ${
+          className={`absolute bottom-0 left-0 right-0 z-30 ${
             showControls || !isPlaying ? 'opacity-100' : 'opacity-0 pointer-events-none'
           }`}
         >
@@ -546,17 +546,11 @@ const VideoPlayer = ({ embedUrl, title }: VideoPlayerProps) => {
 
             {/* Center: Main controls - Compact */}
             <div className="flex items-center gap-3">
-              <button
-                onClick={() => seekBackward(10)}
-                className="text-white active:scale-90 transition-transform"
-              >
+              <button onClick={() => seekBackward(10)} className="text-white">
                 <SeekBackward10 className="w-6 h-6" />
               </button>
 
-              <button
-                onClick={togglePlay}
-                className="text-white active:scale-90 transition-transform"
-              >
+              <button onClick={togglePlay} className="text-white">
                 {isPlaying ? (
                   <Pause className="w-7 h-7" fill="white" />
                 ) : (
@@ -564,10 +558,7 @@ const VideoPlayer = ({ embedUrl, title }: VideoPlayerProps) => {
                 )}
               </button>
 
-              <button
-                onClick={() => seekForward(10)}
-                className="text-white active:scale-90 transition-transform"
-              >
+              <button onClick={() => seekForward(10)} className="text-white">
                 <SeekForward10 className="w-6 h-6" />
               </button>
             </div>
@@ -577,17 +568,14 @@ const VideoPlayer = ({ embedUrl, title }: VideoPlayerProps) => {
               {/* Playback Speed Button */}
               <button
                 onClick={cyclePlaybackRate}
-                className="text-white text-[10px] font-medium px-2 py-0.5 bg-white/20 hover:bg-white/30 rounded active:scale-95 transition-all"
+                className="text-white text-[10px] font-medium px-2 py-0.5 bg-white/20 hover:bg-white/30 rounded"
                 aria-label="Playback Speed"
               >
                 {playbackRate}x
               </button>
 
               {/* Fullscreen */}
-              <button
-                onClick={toggleFullscreen}
-                className="text-white active:scale-90 transition-transform p-1"
-              >
+              <button onClick={toggleFullscreen} className="text-white p-1">
                 {isFullscreen ? (
                   <Minimize className="w-4 h-4" />
                 ) : (
@@ -627,7 +615,7 @@ const VideoPlayer = ({ embedUrl, title }: VideoPlayerProps) => {
           <div className={`bg-black/60 rounded-full p-4 ${
             showCenterIcon === 'forward' ? 'ml-32' : 
             showCenterIcon === 'backward' ? 'mr-32' : ''
-          }`} style={{ animation: 'pulse 0.5s ease-out' }}>
+          }`}>
             {showCenterIcon === 'play' && <Play className="w-10 h-10 text-white" fill="white" />}
             {showCenterIcon === 'pause' && <Pause className="w-10 h-10 text-white" fill="white" />}
             {showCenterIcon === 'forward' && (
@@ -656,13 +644,13 @@ const VideoPlayer = ({ embedUrl, title }: VideoPlayerProps) => {
       {/* Loading indicator */}
       {!isReady && (
         <div className="absolute inset-0 flex items-center justify-center z-20 bg-black">
-          <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+          <div className="text-white/80 text-sm font-medium">Loading…</div>
         </div>
       )}
 
       {/* Desktop Controls */}
       <div
-        className={`absolute bottom-0 left-0 right-0 z-30 bg-gradient-to-t from-black/95 via-black/60 to-transparent transition-opacity duration-300 ${
+        className={`absolute bottom-0 left-0 right-0 z-30 bg-gradient-to-t from-black/95 via-black/60 to-transparent ${
           showControls || !isPlaying ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
       >

@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/hooks/use-theme";
 import ExternalBrowserRedirect from "@/components/ExternalBrowserRedirect";
 import Index from "./pages/Index";
 import Watch from "./pages/Watch";
+import Install from "./pages/Install";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/watch/:id" element={<Watch />} />
+            <Route path="/install" element={<Install />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
